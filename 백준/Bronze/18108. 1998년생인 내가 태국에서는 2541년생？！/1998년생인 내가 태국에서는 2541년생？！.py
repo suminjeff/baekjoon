@@ -1,3 +1,5 @@
-b_year = int(input())
-s_year = b_year - 543
-print(s_year)
+buddhist_era = int(input())
+
+christian_era = buddhist_era - 543
+
+print(christian_era)
