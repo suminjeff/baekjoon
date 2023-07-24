@@ -1,5 +1,6 @@
 N = int(input())
 
-for i in range(N, 0, -1):
-    star = '*' * i
-    print(f"{star:>{N}}")
+for n in range(N, 0, -1):
+    space = " "
+    star = n * "*"
+    print(space * (N - n) + star)
