@@ -1,7 +1,6 @@
 def solution(dartResult):
     stack = []
     point = {'S': 1, 'D': 2, 'T': 3}
-    # for i in dartResult:
     i = 0
     while i < len(dartResult):
         if dartResult[i].isnumeric():
