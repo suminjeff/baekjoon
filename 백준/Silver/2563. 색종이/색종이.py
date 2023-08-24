@@ -5,8 +5,8 @@ canvas = [[False] * canvas_size for _ in range(canvas_size)]
 
 for b in range(N):
     x, y = map(int, input().split())
-    for row in range(x, x+10):
-        for col in range(y, y+10):
+    for row in range(x, x+square_size):
+        for col in range(y, y+square_size):
             canvas[row][col] = True
 
 count = 0
