@@ -1,21 +1,18 @@
 N = 9
-arr = []
+heights = [int(input()) for _ in range(9)]
 
-for n in range(N):
-    arr.append(int(input()))
-
-subset_list = []
-for i in range(1<<N):
+subsets = []
+for i in range(1 << N):
     subset = []
     for j in range(N):
-        if i & (1<<j):
-            subset.append(arr[j])
-    subset_list.append(subset)
+        if i & (1 << j):
+            subset.append(heights[j])
+    subsets.append(subset)
 
-new_list = []
-for i in range(1<<N):
-    if len(subset_list[i]) == 7 and sum(subset_list[i]) == 100:
-        new_list = sorted(subset_list[i])
+ans = []
+for subset in subsets:
+    if len(subset) == 7 and sum(subset) == 100:
+        ans = sorted(subset)
 
-for i in new_list:
+for i in ans:
     print(i)
