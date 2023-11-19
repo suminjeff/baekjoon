@@ -1,24 +1,23 @@
 import sys
-input = sys.stdin.readline
+input=sys.stdin.readline
 
+n, m=map(int,input().split())
+board=[list(input().strip()) for i in range(n)]
+visited=[0]*26
+dx=[-1,0,1,0]
+dy=[0,1,-0,-1]
+maxcnt=0
 
-def dfs(r, c, visited, depth):
-    global max_depth
-    max_depth = max(max_depth, depth)
-    v = arr[r][c]
-    visited[ord(v)-65] = 1
-    delta = [[r+1, c], [r, c+1], [r-1, c], [r, c-1]]
-    for nr, nc in delta:
-        if 0 <= nr < R and 0 <= nc < C:
-            nv = arr[nr][nc]
-            if visited[ord(nv)-65] == 0:
-                dfs(nr, nc, visited, depth+1)
-                visited[ord(nv)-65] = 0
+def dfs(x,y, cnt):
+    global maxcnt
+    maxcnt=max(cnt, maxcnt)
+    for i in range(4):
+        nx, ny= x+dx[i], y+dy[i]
+        if 0<=nx<n and 0<=ny<m and visited[ord(board[nx][ny])-ord('A')]==0:
+            visited[ord(board[nx][ny])-ord('A')]=1
+            dfs(nx,ny,cnt+1)
+            visited[ord(board[nx][ny])-ord('A')]=0
 
-
-visited = [0]*26
-R, C = map(int, input().split())
-arr = [list(input().rstrip()) for _ in range(R)]
-max_depth = 0
-dfs(0, 0, visited, 1)
-print(max_depth)
+visited[ord(board[0][0])-ord('A')]=1
+dfs(0,0,1)
+print(maxcnt)
