@@ -53,6 +53,10 @@ if K > 1:
             ans = max(ans, c)
             cnt += 1
 else:
+    for x, y, c in edges:
+        p, q = find(x), find(y)
+        if p != q:
+            union(p, q)
     ans = int(1e9)
     for i in range(N):
         max_len = 0
