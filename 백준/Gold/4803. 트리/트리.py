@@ -25,7 +25,6 @@ while True:
         if find(x) != find(y):
             union(x, y)
         else:
-            union(x, y)
             union(0, min(x, y))
     tree = 0
     for i in range(1, n+1):
