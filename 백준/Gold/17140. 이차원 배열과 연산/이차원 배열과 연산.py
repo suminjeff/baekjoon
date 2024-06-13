@@ -21,9 +21,9 @@ def r_sort(arr, size):
 
 
 def c_sort(arr, size):
-    transposed_arr = [list(x) for x in zip(*arr)] # 전치 행렬
+    transposed_arr = list(map(list, zip(*arr))) # 전치 행렬
     new_arr = r_sort(transposed_arr, size)
-    new_arr = [list(x) for x in zip(*new_arr)]
+    new_arr = list(map(list, zip(*new_arr)))
     return new_arr
 
 
