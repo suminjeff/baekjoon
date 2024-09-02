@@ -1,39 +1,48 @@
 import sys
-input = sys.stdin.readline
-
 from collections import deque
 
-R, C = map(int, input().split())
-arr = [input().rstrip() for _ in range(R)]
-ji = deque()
-visited = [[0]*C for _ in range(R)]
-fire = deque()
-fire_visited = [[0]*C for _ in range(R)]
-for i in range(R):
-    for j in range(C):
-        if arr[i][j] == 'J':
-            visited[i][j] = 1
-            ji.append([i, j])
-        elif arr[i][j] == 'F':
-            fire_visited[i][j] = 1
-            fire.append([i, j])
 
-while fire:
-    r, c = fire.popleft()
-    for nr, nc in [[r+1, c], [r-1, c], [r, c+1], [r, c-1]]:
-        if 0 <= nr < R and 0 <= nc < C and arr[nr][nc] in ".J" and fire_visited[nr][nc] == 0:
-            fire_visited[nr][nc] = fire_visited[r][c] + 1
-            fire.append([nr, nc])
-ans = "IMPOSSIBLE"
-while ji:
-    r, c = ji.popleft()
-    if r == 0 or r == R-1 or c == 0 or c == C-1:
-        ans = visited[r][c]
-        break
-    for nr, nc in [[r+1, c], [r-1, c], [r, c+1], [r, c-1]]:
-        if 0 <= nr < R and 0 <= nc < C and arr[nr][nc] in ".J" and visited[nr][nc] == 0:
-            if fire_visited[nr][nc] == 0 or fire_visited[nr][nc] > visited[r][c]+1:
-                visited[nr][nc] = visited[r][c] + 1
-                ji.append([nr, nc])
+def solve(r, c, maze):
 
-print(ans)
+    jh_que = deque()
+    jh_visited = [[-1 for _ in range(c)] for _ in range(r)]
+
+    f_que = deque()
+    f_visited = [[-1 for _ in range(c)] for _ in range(r)]
+
+    for i in range(r):
+        for j in range(c):
+            v = maze[i][j]
+            if v == 'J':
+                jh_que.append([i, j])
+                jh_visited[i][j] = 0
+            elif v == 'F':
+                f_que.append([i, j])
+                f_visited[i][j] = 0
+
+    while f_que:
+        x, y = f_que.popleft()
+        for nx, ny in [[x+1, y], [x-1, y], [x, y+1], [x, y-1]]:
+            if 0 <= nx < r and 0 <= ny < c and maze[nx][ny] in '.J' and f_visited[nx][ny] == -1:
+                f_visited[nx][ny] = f_visited[x][y] + 1
+                f_que.append([nx, ny])
+    while jh_que:
+        x, y = jh_que.popleft()
+        if x == 0 or x == r-1 or y == 0 or y == c-1:
+            return jh_visited[x][y]+1
+
+        for nx, ny in [[x+1, y], [x-1, y], [x, y+1], [x, y-1]]:
+            if 0 <= nx < r and 0 <= ny < c and maze[nx][ny] in '.J' and jh_visited[nx][ny] == -1:
+                nv = jh_visited[x][y]+1
+                if f_visited[nx][ny] == -1 or f_visited[nx][ny] > nv:
+                    jh_visited[nx][ny] = nv
+                    jh_que.append([nx, ny])
+
+    return 'IMPOSSIBLE'
+
+
+if __name__ == '__main__':
+    R, C = map(int, input().split())
+    MAZE = [list(input()) for _ in range(R)]
+    ANSWER = solve(R, C, MAZE)
+    print(ANSWER)
