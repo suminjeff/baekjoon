@@ -1,18 +1,20 @@
-N = int(input())
-square_size = 10
-canvas_size = 100
-canvas = [[False] * canvas_size for _ in range(canvas_size)]
+import sys
 
-for b in range(N):
-    x, y = map(int, input().split())
-    for row in range(x, x+square_size):
-        for col in range(y, y+square_size):
-            canvas[row][col] = True
 
-count = 0
-for row in range(canvas_size):
-    for col in range(canvas_size):
-        if canvas[row][col]:
-            count += 1
+def solve(n, position):
+    answer = 0
+    canvas = [[0]*max(map(lambda x:x[0]+10+1, position)) for _ in range(max(map(lambda x:x[1]+10+1, position)))]
+    for x, y in position:
+        for r in range(y, y+10):
+            for c in range(x, x+10):
+                if canvas[r][c] == 0:
+                    canvas[r][c] = 1
+                    answer += 1
+    return answer
 
-print(count)
+
+if __name__ == '__main__':
+    N = int(input())
+    POSITION = [list(map(int, input().split())) for _ in range(N)]
+    ANSWER = solve(N, POSITION)
+    print(ANSWER)
