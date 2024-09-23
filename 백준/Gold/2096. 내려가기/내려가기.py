@@ -1,17 +1,24 @@
-def solve(n, grid):
-    max_dp = grid[0][:3]
-    min_dp = grid[0][:3]
+import sys
+input = sys.stdin.readline
+n = int(input())
 
-    for r in range(1, n):
-        row = grid[r]
-        max_dp = [row[0] + max(max_dp[0], max_dp[1]), row[1] + max(max_dp), row[2] + max(max_dp[1], max_dp[2])]
-        min_dp = [row[0] + min(min_dp[0], min_dp[1]), row[1] + min(min_dp), row[2] + min(min_dp[1], min_dp[2])]
+max_dp = [0, 0, 0]
+min_dp = [0, 0, 0]
 
-    return max(max_dp), min(min_dp)
+for i in range(n):
+    a, b, c = map(int, input().rstrip().split())
+    if i == 0:
+        max_dp = [a, b, c]
+        min_dp = [a, b, c]
+    else:
+        temp_max = max_dp[:]
+        max_dp[0] = max(temp_max[:2]) + a
+        max_dp[1] = max(temp_max) + b
+        max_dp[2] = max(temp_max[1:]) + c
 
+        temp_min = min_dp[:]
+        min_dp[0] = min(temp_min[:2]) + a
+        min_dp[1] = min(temp_min) + b
+        min_dp[2] = min(temp_min[1:]) + c
 
-if __name__ == '__main__':
-    N = int(input())
-    GRID = [list(map(int, input().split())) for _ in range(N)]
-    ANSWER = solve(N, GRID)
-    print(*ANSWER)
+print(max(max_dp), min(min_dp))
