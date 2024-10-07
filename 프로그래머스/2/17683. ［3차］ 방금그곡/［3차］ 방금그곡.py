@@ -18,18 +18,35 @@ def get_played_music(music, playtime):
         played_music += music[t%len(music)]
     return played_music
 
-def rabin_karp(string, substring):
-    n, m = len(string), len(substring)
-    # 찾고자 하는 substring의 길이가 string보다 길다면 False
-    if n < m:
+def get_prefix_pointer(string):
+    prefix_pointer = [0]*len(string)
+    j = 0  # 접두사 포인터
+    for i in range(1, len(string)):
+        while j > 0 and string[i] != string[j]:
+            j = prefix_pointer[j-1]
+        if string[i] == string[j]:
+            j += 1
+            prefix_pointer[i] = j
+    return prefix_pointer
+
+def kmp(string, substring):
+    if len(substring) > len(string):
         return False
     
-    target = hash(substring)
-    print(string)
-    for i in range(n-m+1):
-        tmp = hash(string[i:i+m])
-        if tmp == target:
-            return True
+    # KMP 알고리즘에 필요한 접두사 포인터 배열
+    prefix_pointer = get_prefix_pointer(substring)
+    j = 0
+    for i in range(len(string)):
+        while j > 0 and string[i] != substring[j]:
+            j = prefix_pointer[j-1]
+    
+        # 문자가 일치하면 j를 증가시켜 계속 탐색
+        if string[i] == substring[j]:
+            j += 1
+            # 패턴 전체가 일치했으면 True 반환
+            if j == len(substring):
+                return True
+    
     return False
 
 def solution(m, musicinfos):
@@ -42,7 +59,8 @@ def solution(m, musicinfos):
         music = get_processed_music(music)
         playtime = get_processed_time(end_time) - get_processed_time(start_time)
         played_music = get_played_music(music, playtime)
-        is_match = rabin_karp(played_music, m)
+        is_match = kmp(played_music, m)
+        print(is_match)
         if is_match:
             result.append([playtime, idx, title])
     if result:
