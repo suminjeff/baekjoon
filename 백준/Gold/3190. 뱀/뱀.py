@@ -24,12 +24,8 @@ def solve(n, k, apple, l, direction):
             nr, nc = r + dr, c + dc
             if 0 <= nr < n and 0 <= nc < n and board[nr][nc] <= 1:
                 if board[nr][nc] == 0:
-                    if snake:
-                        tr, tc = snake.pop()
-                        board[tr][tc] = 0
-                    else:
-                        snake.popleft()
-                        board[r][c] = 0
+                    tr, tc = snake.pop()
+                    board[tr][tc] = 0
                 board[nr][nc] = 2
                 snake.appendleft([nr, nc])
                 r, c = nr, nc
@@ -49,12 +45,8 @@ def solve(n, k, apple, l, direction):
         nr, nc = r + dr, c + dc
         if 0 <= nr < n and 0 <= nc < n and board[nr][nc] <= 1:
             if board[nr][nc] == 0:
-                if snake:
-                    tr, tc = snake.pop()
-                    board[tr][tc] = 0
-                else:
-                    snake.popleft()
-                    board[r][c] = 0
+                tr, tc = snake.pop()
+                board[tr][tc] = 0
             board[nr][nc] = 2
             snake.appendleft([nr, nc])
             r, c = nr, nc
