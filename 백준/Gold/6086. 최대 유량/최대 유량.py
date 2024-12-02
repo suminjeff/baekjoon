@@ -3,6 +3,13 @@ import sys
 from collections import deque
 
 
+def char_to_integer(c: str) -> int:
+    if c.isupper():
+        return ord(c) - ord('A')
+    else:
+        return ord(c) - ord('a') + 26
+
+
 def bfs(flow: list[list[int]], capacity: list[list[int]], source: int, sink: int) -> list:
     que = deque([source])
     parent = [-1]*SIZE
@@ -18,7 +25,7 @@ def bfs(flow: list[list[int]], capacity: list[list[int]], source: int, sink: int
 
 def max_flow(capacity: list[list[int]], source: int, sink: int) -> int:
     flow = [[0]*SIZE for _ in range(SIZE)]
-    result = 0
+    result = 0  # 총 유량
 
     while True:
         parent = bfs(flow, capacity, source, sink)
@@ -34,7 +41,6 @@ def max_flow(capacity: list[list[int]], source: int, sink: int) -> int:
         p = sink
         while p != source:
             flow[parent[p]][p] += amount
-            flow[p][parent[p]] -= amount
             p = parent[p]
 
 
@@ -43,16 +49,17 @@ def solve(n: int, pipe: list[list]) -> int:
     capacity = [[0]*SIZE for _ in range(SIZE)]  # r에서 c까지의 용량
     for i in range(n):
         p, q, c = pipe[i]
-        p, q = ord(p), ord(q)
+        p, q = char_to_integer(p), char_to_integer(q)
         capacity[p][q] += c
         capacity[q][p] += c
 
-    answer = max_flow(capacity, ord("A"), ord("Z"))
+    answer = max_flow(capacity, char_to_integer('A'), char_to_integer('Z'))
 
     return answer
 
+
 if __name__ == '__main__':
-    SIZE = 128
+    SIZE = 52
     N = int(input())
     PIPE = [list(map(lambda x: int(x) if x.isnumeric() else x, input().split())) for _ in range(N)]
     ANSWER = solve(N, PIPE)
